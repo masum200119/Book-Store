@@ -1,46 +1,28 @@
+import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-from PIL import Image
-from collections import Counter
 
-# Step 1: Load the image and convert it to grayscale
-def load_image(image_path):
-    image = Image.open(image_path).convert('L')  # Convert to grayscale ('L' mode)
-    return np.array(image)
+# Load a grayscale image
+image = cv2.imread('masum.jpg', cv2.IMREAD_GRAYSCALE)
 
-# Step 2: Create a function to calculate probabilities and plot the histogram
-def plot_histogram(image_array):
-    # Flatten the 2D array
-    flattened_image = image_array.flatten()
-    
-    # Count pixel intensities
-    pixel_counts = Counter(flattened_image)
-    
-    # Total number of pixels
-    total_pixels = flattened_image.size
-    
-    # Calculate probabilities
-    pixel_probabilities = {intensity: count / total_pixels for intensity, count in pixel_counts.items()}
-    
-    # Prepare data for plotting
-    intensities = list(pixel_probabilities.keys())
-    probabilities = list(pixel_probabilities.values())
-    
-    # Plot the histogram
-    plt.bar(intensities, probabilities, width=1, align='center', color='gray')
-    plt.xlabel('Pixel Intensity')
-    plt.ylabel('Probability')
-    plt.title('Histogram of Pixel Intensity Probabilities')
-    plt.show()
+# Flatten the image array to get a list of pixel values
+pixels = image.flatten()
 
-# Step 3: Main function to load an image, convert it, and plot the histogram
-def main(image_path):
-    # Load image and convert to 2D array
-    image_array = load_image(image_path)
-    
-    # Plot histogram
-    plot_histogram(image_array)
+# Initialize an array to store the frequency of each pixel value (0-255)
+frequency = np.zeros(256)
 
-# Example usage:
-image_path = 'Abdulla.jpg'  # Replace with the path to your image
-main(image_path)
+# Count occurrences of each pixel value
+for pixel in pixels:
+    frequency[pixel] += 1
+
+# Calculate the probability of each pixel value
+total_pixels = pixels.size
+probability = frequency / total_pixels
+
+# Plotting the probability histogram
+plt.figure(figsize=(10, 5))
+plt.bar(range(256), probability, color='gray')
+plt.xlabel('Pixel Value')
+plt.ylabel('Probability')
+plt.title('Probability of Pixel Values')
+plt.show()
