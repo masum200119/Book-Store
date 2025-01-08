@@ -1,27 +1,3 @@
-# import cv2
-# import matplotlib.pyplot as plt
-
-# # Load a grayscale image
-# image = cv2.imread('masum.jpg', cv2.IMREAD_GRAYSCALE)
-
-# # Apply histogram equalization
-# equalized_image = cv2.equalizeHist(image)
-
-# # Plot the original and equalized images
-# plt.figure(figsize=(10, 5))
-
-# plt.subplot(1, 2, 1)
-# plt.title("Original Image")
-# plt.imshow(image)
-# plt.axis('off')
-
-# plt.subplot(1, 2, 2)
-# plt.title("Equalized Image")
-# plt.imshow(equalized_image, cmap='gray')
-# plt.axis('off')
-
-# plt.show()
-
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -29,8 +5,15 @@ import matplotlib.pyplot as plt
 # Load a grayscale image
 image = cv2.imread('image.jpg', cv2.IMREAD_GRAYSCALE)
 
-# Step 1: Calculate the histogram
-hist, _ = np.histogram(image.flatten(), bins=256, range=[0, 256])
+# Step 1: Manually calculate the histogram
+def manual_histogram(image):
+    flattened_image = image.flatten()
+    hist = np.zeros(256, dtype=int)
+    for pixel_value in flattened_image:
+        hist[pixel_value] += 1
+    return hist
+
+hist = manual_histogram(image)
 
 # Step 2: Calculate the cumulative distribution function (CDF)
 cdf = hist.cumsum()
@@ -58,4 +41,3 @@ plt.imshow(equalized_image, cmap='gray')
 plt.axis('off')
 
 plt.show()
-
