@@ -1,19 +1,31 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
 
-import cv2 
-import numpy as np 
+# Load the image
+image = cv2.imread('image.jpg', cv2.IMREAD_GRAYSCALE)
 
-# Reading the input image 
-img = cv2.imread('image.jpg', 0) 
+# Define a kernel
+kernel = np.ones((5, 5), np.uint8)  # You can adjust the kernel size (5x5 here)
 
-# Taking a matrix of size 5 as the kernel 
-kernel = np.ones((3, 3), np.uint8) 
+# Apply erosion
+eroded_image = cv2.erode(image, kernel, iterations=5)
 
+# Plot the images side by side
+plt.figure(figsize=(10, 5))
 
-img_erosion = cv2.erode(img, kernel, iterations=1) 
-img_dilation = cv2.dilate(img, kernel, iterations=1) 
+# Original image
+plt.subplot(1, 2, 1)
+plt.imshow(image, cmap='gray')
+plt.title('Original Image')
+plt.axis('off')
 
-cv2.imshow('Input', img) 
-cv2.imshow('Erosion', img_erosion) 
-cv2.imshow('Dilation', img_dilation) 
+# Eroded image
+plt.subplot(1, 2, 2)
+plt.imshow(eroded_image, cmap='gray')
+plt.title('Eroded Image')
+plt.axis('off')
 
-cv2.waitKey(0) 
+# Show the plot
+plt.tight_layout()
+plt.show()
